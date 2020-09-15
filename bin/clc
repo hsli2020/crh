@@ -1,0 +1,3 @@
+# !/bin/bash
+rm app/cache/metaData/*.php 2> /dev/null
+rm app/cache/volt/*.php 2> /dev/null

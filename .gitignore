@@ -1,0 +1,12 @@
+bin/composer.phar
+app/cache/
+app/logs/
+vendor/
+
+.DS_Store
+composer.lock
+*.tmp
+tmp/
+job/autopulse.ini
+filelist
+tt.php
