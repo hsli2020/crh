@@ -47,11 +47,11 @@
         <tr>
           <td>{{ date }} {{ d[0] }}:00</td>
           {% if d[2] is not empty %}
-            <td>{{ d[2] }}</td>
+            <td class="w3-text-pink">{{ d[2] }}</td>
           {% else %}
             <td>-</td>
           {% endif %}
-          <td>{{ d[1] }}</td>
+          <td class="w3-text-blue">{{ d[1] }}</td>
         </tr>
       {% endfor %}
 

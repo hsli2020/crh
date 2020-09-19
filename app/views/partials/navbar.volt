@@ -10,6 +10,13 @@
     </div>
   </li>
 
+  <li class="w3-dropdown-hover w3-teal w3-hover-grey">
+    <a href="javascript:;" class="w3-hover-grey">Tools <i class="fa fa-caret-down"></i></a>
+    <div class="w3-dropdown-content w3-white w3-card-4">
+      <a href="#" class="w3-hover-teal">Data Export</a>
+    </div>
+  </li>
+
   <li class="w3-dropdown-hover w3-right">
     <a href="javascript:;" class="w3-teal w3-hover-grey">Profile <i class="fa fa-caret-down"></i></a>
     <div class="w3-dropdown-content w3-white w3-card-4" style="right:0">
