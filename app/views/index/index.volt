@@ -13,6 +13,7 @@
     height: 100%;
     line-height: 1.8;
   }
+  a { text-decoration: none; }
   /* Full height image header */
   .bkimg {
     background-position: center;
@@ -38,7 +39,6 @@
 
 <div class="w3-row-padding w3-center w3-margin-top">
 
-
 <div class="w3-quarter">
   <div style="min-height:460px" class="w3-container">
   </div>
@@ -47,9 +47,9 @@
 <div class="w3-quarter">
   <a href="/crh1">
   <div class="w3-card w3-container w3-hover-light-grey" style="min-height:400px">
-  <h3>CRH 1</h3><br>
+  <h3>CRH</h3><br>
   <i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <h1>CRH 1</h1>
+  <h1>METER 1</h1>
   </div>
   </a>
 </div>
@@ -57,9 +57,9 @@
 <div class="w3-quarter">
   <a href="/crh2">
   <div class="w3-card w3-container w3-hover-light-grey" style="min-height:400px">
-  <h3>CRH 2</h3><br>
+  <h3>CRH</h3><br>
   <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <h1>CRH 2</h1>
+  <h1>METER 2</h1>
   </div>
   </a>
 </div>

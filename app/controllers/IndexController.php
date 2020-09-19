@@ -6,10 +6,7 @@ class IndexController extends ControllerBase
 {
     public function indexAction()
     {
-        return $this->dispatcher->forward(array(
-            'controller' => 'dashboard',
-            'action' => 'meter'
-        ));
+        return $this->response->redirect('/dashboard');
     }
 
     public function testAction()
@@ -17,5 +14,6 @@ class IndexController extends ControllerBase
         $this->view->pageTitle = 'Test Page';
         $this->view->data = __METHOD__;
         $this->flashSession->success('Everything is awesome!');
+       #$this->view->pick('/index/index');
     }
 }
