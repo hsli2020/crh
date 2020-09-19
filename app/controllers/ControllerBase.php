@@ -16,7 +16,7 @@ class ControllerBase extends Controller
     public function beforeExecuteRoute(Dispatcher $dispatcher)
     {
         $controllerName = $dispatcher->getControllerName();
-/*
+
         // Only check permissions on private controllers
         if ($this->isPrivate($controllerName)) {
             // Get the current identity
@@ -30,16 +30,15 @@ class ControllerBase extends Controller
                 return false;
             }
         }
-*/
+
         return true;
     }
 
     private function isPrivate($controllerName)
     {
         $privateControllers = array(
+            'index',
             'dashboard',
-            'project',
-            'report',
         );
 
         return in_array($controllerName, $privateControllers);

@@ -3,8 +3,10 @@
   <li class="w3-dropdown-hover w3-teal w3-hover-grey">
     <a href="javascript:;" class="w3-hover-grey">Dashboard <i class="fa fa-caret-down"></i></a>
     <div class="w3-dropdown-content w3-white w3-card-4">
-      <a href="/crh1" class="w3-hover-teal">CRH1 Dashboard</a>
-      <a href="/crh2" class="w3-hover-teal">CRH2 Dashboard</a>
+      <a href="/" class="w3-hover-teal">Meter 1 + 2</a>
+      <hr style="margin:0.5em;">
+      <a href="/crh1" class="w3-hover-teal">Meter 1 Dashboard</a>
+      <a href="/crh2" class="w3-hover-teal">Meter 2 Dashboard</a>
     </div>
   </li>
 

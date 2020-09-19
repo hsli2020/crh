@@ -7,7 +7,7 @@ use Phalcon\Di\Injectable;
 class DataService extends Injectable
 {
     // CRH data
-    public function getCrhData($prj, $date)
+    public function getData($meter, $date)
     {
         // return an array in the following format
         // [
@@ -15,36 +15,42 @@ class DataService extends Injectable
         //    HOUR => [ HOUR, BASELINE, LOAD ]
         // ]
 
-        $result = $this->getStdBaseline($prj, $date);
-        $result = $this->getActualLoad($prj, $date, $result);
+        $result = $this->getStdBaseline($meter, $date);
+        $result = $this->getActualLoad($meter, $date, $result);
 
         return $result;
     }
 
     // CRH Standard Baseline
-    protected function getStdBaseline($prj, $date)
+    protected function getStdBaseline($meter, $date)
     {
-        $sql = "SELECT * FROM crh_baseline";
+        if ($meter == 1) $col = 'meter1'; else
+        if ($meter == 2) $col = 'meter2'; else
+        if ($meter == 3) $col = '(meter1 + meter2)';
+
+        $sql = "SELECT hour, $col AS meter FROM crh_baseline";
         $rows = $this->db->fetchAll($sql);
 
         $data = [];
         foreach ($rows as $row) {
-            $hr = $row['hour']; // chart requires number, not string
-            $m1 = $row['meter1'];
-            $data[$hr] = [ $hr, $m1, null ];
+            $hr  = $row['hour']; // chart requires number, not string
+            $val = $row['meter'];
+            $data[$hr] = [ $hr, $val, null ];
         }
 
         return $data;
     }
 
     // CRH Actual Load
-    protected function getActualLoad($prj, $date, $result)
+    protected function getActualLoad($meter, $date, $result)
     {
+        if ($meter == 3) $meter = 1; // TODO: TEMP
+
         $sql = "SELECT time AS time_utc,
                        CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
                        CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
                        kva AS kw
-                  FROM p{$prj}_mb_001_genmeter
+                  FROM crh_meter_{$meter}v
                 HAVING DATE(time_edt)='$date'";
 
         $data = $this->db->fetchAll($sql);
@@ -76,8 +82,8 @@ class DataService extends Injectable
 
     public function generateBaseline()
     {
-        $b1 = $this->calcBaseline(51); // Meter-1
-        $b2 = $this->calcBaseline(52); // Meter-2
+        $b1 = $this->calcBaseline(1); // Meter-1
+        $b2 = $this->calcBaseline(2); // Meter-2
 
         $this->db->execute('TRUNCATE TABLE crh_baseline');
 
@@ -99,7 +105,7 @@ class DataService extends Injectable
                        CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
                        CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
                        kva AS kw
-                  FROM p{$meter}_mb_001_genmeter
+                  FROM crh_meter_{$meter}v
                 HAVING time_edt>='$start' AND time_edt<'$date'
               ORDER BY time DESC";
         $data = $this->db->fetchAll($sql);

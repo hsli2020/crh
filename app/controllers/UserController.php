@@ -73,7 +73,7 @@ class UserController extends ControllerBase
     public function logoutAction()
     {
         $this->session->destroy();
-        return $this->response->redirect("/");
+        return $this->response->redirect("/user/login");
     }
 
     public function addAction()
