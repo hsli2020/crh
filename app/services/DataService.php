@@ -24,89 +24,17 @@ class DataService extends Injectable
     // CRH Standard Baseline
     protected function getStdBaseline($prj, $date)
     {
-        $start = date('Y-m-d', strtotime('-35 day'));
-        $sql = "SELECT time AS time_utc,
-                       CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
-                       CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
-                       kva AS kw
-                  FROM p{$prj}_mb_001_genmeter
-                HAVING time_edt>='$start' AND time_edt<'$date'
-              ORDER BY time DESC";
-        $data = $this->db->fetchAll($sql);
+        $sql = "SELECT * FROM crh_baseline";
+        $rows = $this->db->fetchAll($sql);
 
-        $season = getSeason($date);
-
-        $daily = [];
-        foreach ($data as $rec) {
-            $time = $rec['time_edt'];
-            $kwh = $rec['kw'];
-
-            $dt = substr($time, 0, 10);
-            $hr = substr($time, 11, 2);
-
-            if (isWeekend($dt) || isHoliday($dt) || isMaintenance($dt)) {
-                continue;
-            }
-
-            if (getSeason($dt) != $season) {
-                break; // shouldn't cross seasons (SUMMER/WINTER)
-            }
-
-            if (isset($daily[$dt])) {
-                $daily[$dt]['total'] += $kwh;
-            } else {
-                $daily[$dt]['total'] = $kwh;
-            }
-
-            if (isset($daily[$dt]['hourly'][$hr])) {
-                $daily[$dt]['hourly'][$hr]['sum'] += $kwh;
-                $daily[$dt]['hourly'][$hr]['cnt'] += 1;
-            } else {
-                $daily[$dt]['hourly'][$hr]['sum'] = $kwh;
-                $daily[$dt]['hourly'][$hr]['cnt'] = 1;
-            }
-
-            if (count($daily) == 20+1) {
-                array_pop($daily);
-                break;
-            }
+        $data = [];
+        foreach ($rows as $row) {
+            $hr = $row['hour']; // chart requires number, not string
+            $m1 = $row['meter1'];
+            $data[$hr] = [ $hr, $m1, null ];
         }
 
-        uasort($daily, function($a, $b) {
-            if ($a['total'] == $b['total']) { return 0; }
-            return ($a['total'] < $b['total']) ? 1 : -1;
-        });
-
-        $top15 = array_slice($daily, 0, 15);
-
-        $hourly = [];
-        foreach ($top15 as $day) {
-            foreach ($day['hourly'] as $hour => $rec) {
-                if (isset($hourly[$hour])) {
-                    $hourly[$hour]['sum'] += $rec['sum'];
-                    $hourly[$hour]['cnt'] += $rec['cnt'];
-                } else {
-                    $hourly[$hour]['sum'] = $rec['sum'];
-                    $hourly[$hour]['cnt'] = 1;
-                }
-            }
-        }
-
-        foreach ($hourly as $hour => $rec) {
-            $avg = round($rec['sum']/$rec['cnt']);
-            $hourly[$hour]['avg'] = $avg;
-        }
-
-        // Baseline (Avg)
-        $result = [];
-        foreach ($hourly as $hour => $rec) {
-            $h = intval($hour); // chart requires number, not string
-            $avg = $rec['avg'];
-            $result[$h] = [ $h, $avg, null ];
-        }
-
-        ksort($result); // sort by hour
-        return $result;
+        return $data;
     }
 
     // CRH Actual Load
