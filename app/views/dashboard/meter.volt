@@ -86,7 +86,7 @@
 
 {% block jscode %}
 var line1 = {
-    label: "Avg. of Top 15 Days",
+    label: "Baseline", // "Avg. of Top 15 Days",
     data: {{ jsonBase }},
     color: "#069",
     shadowSize: 0,
@@ -130,6 +130,30 @@ var options = {
 }
 
 plot1 = $.plot("#placeholder1", [ line1, line2 ], options);
+
+$("<div id='tooltip'></div>").css({
+    position: "absolute",
+    display: "none",
+    border: "1px solid #fdd",
+    padding: "2px 5px",
+    "font-size": "16px",
+    "font-weight": "bold",
+    "background-color": "#fee",
+    //opacity: 0.80
+}).appendTo("body");
+
+$("#placeholder1").bind("plothover", function (event, pos, item) {
+    if (item) {
+        var x = item.datapoint[0] + ':00',
+            y = item.datapoint[1];
+
+        $("#tooltip").html(item.series.label + " at " + x + " = " + y)
+            .css({top: item.pageY+5, left: item.pageX+5})
+            .fadeIn(200);
+    } else {
+        $("#tooltip").hide();
+    }
+});
 
 {% endblock %}
 
