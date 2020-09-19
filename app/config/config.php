@@ -14,6 +14,7 @@ $application = [
     'logDir'                   => BASE_DIR . '/app/logs/',
     'utilsDir'                 => BASE_DIR . '/app/utils/',
     'securityDir'              => BASE_DIR . '/app/cache/security/',
+    'sessionDir'               => BASE_DIR . '/app/cache/session/',
     'vendorDir'                => BASE_DIR . '/vendor',
     'baseUri'                  => '',
     'appTitle'                 => 'Solar EMS',

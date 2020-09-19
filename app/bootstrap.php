@@ -184,6 +184,9 @@ class Bootstrap
     protected function initSession(Config $config, EventsManager $em)
     {
         $this->di->setShared('session', function () use ($config) {
+            // save session in seperated folder to avoid conflicat with another site on same host
+            session_save_path($config->application->sessionDir);
+
             $session = new Phalcon\Session\Adapter\Files(array(
                 'uniqueId' => $config->application->appName
             ));
