@@ -434,6 +434,10 @@ class Bootstrap
         $this->di->setShared('exportService', function () {
             return new App\Service\ExportService();
         });
+
+        $this->di->setShared('alertService', function () {
+            return new App\Service\AlertService();
+        });
     }
 
     protected function initSecurity(Config $config, EventsManager $em)
