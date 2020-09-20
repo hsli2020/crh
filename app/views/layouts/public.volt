@@ -41,9 +41,9 @@
 
   {{ stylesheet_link("/css/style.css") }}
 </head>
-<body class="w3-light-grey">
+<body>
 
-  <div class="w3-main" style="margin-top:43px;">
+  <div class="w3-main">
     {% block main %}{% endblock %}
   </div>
 
