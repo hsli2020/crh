@@ -27,8 +27,8 @@ class AlertService extends Injectable
         $alertType = 'NO-DATA';
 
         $meters = [
-            1 => 'crh_meter_1v',
-            2 => 'crh_meter_2v',
+            1 => 'crh_meter_1',
+            2 => 'crh_meter_2',
         ];
 
         $now = time();

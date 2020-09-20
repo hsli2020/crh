@@ -50,7 +50,7 @@ class DataService extends Injectable
                        CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
                        CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
                        kva AS kw
-                  FROM crh_meter_{$meter}v
+                  FROM crh_meter_{$meter}
                 HAVING DATE(time_edt)='$date'";
 
         $data = $this->db->fetchAll($sql);
@@ -105,7 +105,7 @@ class DataService extends Injectable
                        CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
                        CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
                        kva AS kw
-                  FROM crh_meter_{$meter}v
+                  FROM crh_meter_{$meter}
                 HAVING time_edt>='$start' AND time_edt<'$date'
               ORDER BY time DESC";
         $data = $this->db->fetchAll($sql);

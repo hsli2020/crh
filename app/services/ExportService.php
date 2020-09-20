@@ -24,7 +24,7 @@ class ExportService extends Injectable
         $filename = "$basedir./tmp/crh-meter-$meter-$now.csv";
 
         // Table name
-        $table = ($meter == 2) ? 'crh_meter_2v' : 'crh_meter_1v';
+        $table = ($meter == 2) ? 'crh_meter_2' : 'crh_meter_1';
 
         $sql =<<<EOS
             SELECT time, kva AS kw
