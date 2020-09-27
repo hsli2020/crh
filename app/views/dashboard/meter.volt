@@ -149,7 +149,7 @@ var options = {
     },
     xaxis: {
         //mode: 'time',
-        //mode: "categories",
+        //mode: "categories", // x-axis is non-numeric
         show: true,
 		autoscaleMargin: 0.001,
     }

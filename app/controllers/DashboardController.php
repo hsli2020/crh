@@ -34,8 +34,6 @@ class DashboardController extends ControllerBase
        #$now = getNow('Y-m-d H:i', 'EST');
 
         $temp = $this->dataService->getData($id, $date);
-        $cur5min = $this->dataService->getCurrent5MinLoad($id);
-        $min15load = $this->dataService->get15MinLoad($id, $date);
 
         $data = $base = $load = $marker = $band = [];
         foreach ($temp as $hour => $d) {
@@ -51,6 +49,9 @@ class DashboardController extends ControllerBase
                 $band[]   = [ $d[0], $band20p ];
             }
         }
+
+        $cur5min = $this->dataService->getCurrent5MinLoad($id);
+        $min15load = $this->dataService->get15MinLoad($id, $date);
 
        #$this->view->now  = $now;
         $this->view->date = $date;
