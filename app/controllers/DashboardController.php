@@ -36,12 +36,18 @@ class DashboardController extends ControllerBase
         $temp = $this->dataService->getData($id, $date);
         $cur5min = $this->dataService->getCurrent5MinLoad($id);
 
-        $data = $base = $load = [];
+        $data = $base = $load = $marker = $band = [];
         foreach ($temp as $hour => $d) {
             if ($hour >= 8 && $hour <= 22) {
                 $data[] = $d;
                 $base[] = [ $d[0], $d[1] ];
                 $load[] = [ $d[0], $d[2] ];
+
+                $cmarker = $d[1] - 19000;
+                $band20p = round($cmarker*0.80);
+
+                $marker[] = [ $d[0], $cmarker ];
+                $band[]   = [ $d[0], $band20p ];
             }
         }
 
@@ -52,5 +58,7 @@ class DashboardController extends ControllerBase
 
         $this->view->jsonBase = json_encode($base);
         $this->view->jsonLoad = json_encode($load);
+        $this->view->jsonMarker = json_encode($marker);
+        $this->view->jsonBand = json_encode($band);
     }
 }

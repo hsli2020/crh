@@ -95,7 +95,7 @@
 
 {% block jscode %}
 var line1 = {
-    label: "Baseline", // "Avg. of Top 15 Days",
+    label: "Hourly Baseline", // "Avg. of Top 15 Days",
     data: {{ jsonBase }},
     color: "#069",
     shadowSize: 0,
@@ -104,9 +104,27 @@ var line1 = {
 }
 
 var line2 = {
-    label: "Load",
+    label: "Load", // 15 Min Load
     data: {{ jsonLoad }},
     color: "#c40",
+    shadowSize: 0,
+    yaxis: 2,
+    lines: { show: true, lineWidth: 2 }
+}
+
+var line3 = {
+    label: "Curtailment Marker",
+    data: {{ jsonMarker }},
+    color: "#9c27b0",
+    shadowSize: 0,
+    yaxis: 2,
+    lines: { show: true, lineWidth: 2 }
+}
+
+var line4 = {
+    label: "20% Band",
+    data: {{ jsonBand }},
+    color: "#00bcd4",
     shadowSize: 0,
     yaxis: 2,
     lines: { show: true, lineWidth: 2 }
@@ -138,7 +156,7 @@ var options = {
     }
 }
 
-plot1 = $.plot("#placeholder1", [ line1, line2 ], options);
+plot1 = $.plot("#placeholder1", [ line1, line2, line3, line4 ], options);
 
 $("<div id='tooltip'></div>").css({
     position: "absolute",
