@@ -102,8 +102,8 @@ var line1 = {
 }
 
 var line2 = {
-    label: "Load", // 15 Min Load
-    data: {{ jsonLoad }},
+    label: "15 Min Load", // 15 Min Load
+    data: {{ jsonLoad }}, // jsonMin15Load
     color: "#c40",
     shadowSize: 0,
     yaxis: 2,
@@ -149,8 +149,9 @@ var options = {
     },
     xaxis: {
         //mode: 'time',
+        //mode: "categories",
         show: true,
-		autoscaleMargin: 0.01,
+		autoscaleMargin: 0.001,
     }
 }
 
@@ -186,8 +187,11 @@ $("#placeholder1").bind("plothover", function (event, pos, item) {
 {{ javascript_include("/flot/jquery.flot.js") }}
 {{ javascript_include("/flot/jquery.flot.time.js") }}
 {{ javascript_include("/flot/jquery.flot.crosshair.js") }}
+{{ javascript_include("/flot/jquery.flot.categories.js") }}
+
 {{ javascript_include("/pickadate/picker.js") }}
 {{ javascript_include("/pickadate/picker.date.js") }}
+
 {{ javascript_include("/js/script.js") }}
 {% endblock %}
 
