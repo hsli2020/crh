@@ -66,8 +66,8 @@
 
       <tr><th colspan="4" class="text-left"><br>Current 5 min Load</th><tr>
       <tr>
-        <td>{{ latest['time_est'] }}</td>
-        <td colspan="3">{{ latest['kw'] }}</td>
+        <td>{{ cur5min['time_est'] }}</td>
+        <td colspan="3">{{ cur5min['kw'] }}</td>
       </tr>
 
       <tr><th colspan="4" class="text-left">Standard Baseline</th><tr>

@@ -185,7 +185,8 @@ class DataService extends Injectable
         return $result;
     }
 
-    public function getLatest($meter)
+    // Current 5 min Load
+    public function getCurrent5MinLoad($meter)
     {
         $meter = 1; // What to do if meter=3
 

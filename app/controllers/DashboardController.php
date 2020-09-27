@@ -34,7 +34,7 @@ class DashboardController extends ControllerBase
        #$now = getNow('Y-m-d H:i', 'EST');
 
         $temp = $this->dataService->getData($id, $date);
-        $latest = $this->dataService->getLatest($id);
+        $cur5min = $this->dataService->getCurrent5MinLoad($id);
 
         $data = $base = $load = [];
         foreach ($temp as $hour => $d) {
@@ -47,7 +47,7 @@ class DashboardController extends ControllerBase
 
        #$this->view->now  = $now;
         $this->view->date = $date;
-        $this->view->latest = $latest;
+        $this->view->cur5min = $cur5min;
         $this->view->data = $data;
 
         $this->view->jsonBase = json_encode($base);
