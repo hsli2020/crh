@@ -31,20 +31,23 @@ class DashboardController extends ControllerBase
     protected function loadData($id)
     {
         $date = date('Y-m-d');
-        $now = date('Y-m-d H:00');
+       #$now = getNow('Y-m-d H:i', 'EST');
+
         $temp = $this->dataService->getData($id, $date);
+        $latest = $this->dataService->getLatest($id);
 
         $data = $base = $load = [];
         foreach ($temp as $hour => $d) {
-            if ($hour > 7 && $hour < 21) {
+            if ($hour >= 8 && $hour <= 22) {
                 $data[] = $d;
                 $base[] = [ $d[0], $d[1] ];
                 $load[] = [ $d[0], $d[2] ];
             }
         }
 
+       #$this->view->now  = $now;
         $this->view->date = $date;
-        $this->view->now  = $now;
+        $this->view->latest = $latest;
         $this->view->data = $data;
 
         $this->view->jsonBase = json_encode($base);

@@ -184,4 +184,18 @@ class DataService extends Injectable
         ksort($result); // sort by hour
         return $result;
     }
+
+    public function getLatest($meter)
+    {
+        $meter = 1; // What to do if meter=3
+
+        $sql = "SELECT CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
+                       kva AS kw
+                  FROM crh_meter_{$meter}
+              ORDER BY time DESC LIMIT 1";
+        $data = $this->db->fetchOne($sql);
+
+        $data['time_est'] = substr($data['time_est'], 0, 16); // no seconds
+        return $data;
+    }
 }
