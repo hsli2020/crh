@@ -35,6 +35,7 @@ class DashboardController extends ControllerBase
 
         $temp = $this->dataService->getData($id, $date);
         $cur5min = $this->dataService->getCurrent5MinLoad($id);
+        $min15load = $this->dataService->get15MinLoad($id, $date);
 
         $data = $base = $load = $marker = $band = [];
         foreach ($temp as $hour => $d) {
@@ -60,5 +61,6 @@ class DashboardController extends ControllerBase
         $this->view->jsonLoad = json_encode($load);
         $this->view->jsonMarker = json_encode($marker);
         $this->view->jsonBand = json_encode($band);
+        $this->view->jsonMin15Load = json_encode($min15load);
     }
 }

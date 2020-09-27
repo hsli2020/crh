@@ -199,4 +199,33 @@ class DataService extends Injectable
         $data['time_est'] = substr($data['time_est'], 0, 16); // no seconds
         return $data;
     }
+
+    public function get15MinLoad($meter, $date)
+    {
+        $meter = 1; // What to do if meter=3
+
+        $sql = "SELECT FROM_UNIXTIME(((UNIX_TIMESTAMP(CONVERT_TZ(time, 'UTC', 'EST'))-1) DIV 900)*900 + 900) AS time_est,
+                       ROUND(AVG(kva)) AS kw
+                  FROM crh_meter_{$meter}
+                 WHERE CONVERT_TZ(time, 'UTC', 'EST')>'$date'
+              GROUP BY (UNIX_TIMESTAMP(CONVERT_TZ(time, 'UTC', 'EST'))-1) DIV 900";
+        $rows = $this->db->fetchAll($sql);
+
+        /**
+         * return [
+         *    [ 'HH:MM', KW ],
+         *    ...
+         * ]
+         */
+
+        $data = [];
+        foreach ($rows as $row) {
+            $data[] = [
+                substr($row['time_est'], 11, 5), // HH:MM
+                $row['kw'],
+            ];
+        }
+
+        return $data;
+    }
 }
