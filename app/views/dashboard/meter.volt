@@ -33,12 +33,14 @@
   <div class="w3-container w3-third">
     <table id="table1" class="w3-table w3-white w3-bordered w3-border">
       <tr>
-        <th>&nbsp;</th>
+        <th>Time Stamp</th>
         <th>Actual Load</th>
         <th>Standard Baseline</th>
+        <th>Variance</th>
       </tr>
       <tr>
-        <th>Time Stamp</th>
+        <th>(EST)</th>
+        <th>kWh</th>
         <th>kWh</th>
         <th>kWh</th>
       </tr>
@@ -51,19 +53,26 @@
           {% else %}
             <td>-</td>
           {% endif %}
+
           <td class="w3-text-blue">{{ d[1] }}</td>
+
+          {% if d[2] is not empty %}
+            <td class="w3-text-black">{{ d[1] -d[2] }}</td>
+          {% else %}
+            <td>-</td>
+          {% endif %}
         </tr>
       {% endfor %}
 
-      <tr><th colspan="3" class="text-left">Variance</th><tr>
+      <tr><th colspan="4" class="text-left"><br>Current 5 min Load</th><tr>
       <tr>
         <td>{{ now }}</td>
-        <td colspan="2">-</td>
+        <td colspan="3">-</td>
       </tr>
 
-      <tr><th colspan="3" class="text-left">Standard Baseline</th><tr>
+      <tr><th colspan="4" class="text-left">Standard Baseline</th><tr>
       <tr>
-        <td colspan="3" class="text-left">
+        <td colspan="4" class="text-left">
             Average of the highest 15 measurement data values for the same hour that was 
             activated in the last 20 suitable business days prior to activation.
         </td>

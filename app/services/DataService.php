@@ -47,17 +47,17 @@ class DataService extends Injectable
         if ($meter == 3) $meter = 1; // TODO: TEMP
 
         $sql = "SELECT time AS time_utc,
-                       CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
+                   --  CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
                        CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
                        kva AS kw
                   FROM crh_meter_{$meter}
-                HAVING DATE(time_edt)='$date'";
+                HAVING DATE(time_est)='$date'";
 
         $data = $this->db->fetchAll($sql);
 
         $hourly = [];
         foreach ($data as $rec) {
-            $time = $rec['time_edt'];
+            $time = $rec['time_est'];
             $kwh = $rec['kw'];
 
             $dt = substr($time, 0, 10);
@@ -102,11 +102,11 @@ class DataService extends Injectable
 
         $start = date('Y-m-d', strtotime('-35 day'));
         $sql = "SELECT time AS time_utc,
-                       CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
+                   --  CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
                        CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
                        kva AS kw
                   FROM crh_meter_{$meter}
-                HAVING time_edt>='$start' AND time_edt<'$date'
+                HAVING time_est>='$start' AND time_est<'$date'
               ORDER BY time DESC";
         $data = $this->db->fetchAll($sql);
 
@@ -114,7 +114,7 @@ class DataService extends Injectable
 
         $daily = [];
         foreach ($data as $rec) {
-            $time = $rec['time_edt'];
+            $time = $rec['time_est'];
             $kwh = $rec['kw'];
 
             $dt = substr($time, 0, 10);

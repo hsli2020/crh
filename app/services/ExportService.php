@@ -27,9 +27,11 @@ class ExportService extends Injectable
         $table = ($meter == 2) ? 'crh_meter_2' : 'crh_meter_1';
 
         $sql =<<<EOS
-            SELECT time, kva AS kw
+            SELECT "Time(EST)", "KW"
+            UNION ALL
+            SELECT CONVERT_TZ(time, 'UTC', 'EST') AS time_est, kva AS kw
             FROM $table
-            WHERE time>'$startTime' AND time<'$endTime'
+            HAVING time_est>='$startTime' AND time_est<='$endTime'
             INTO OUTFILE '$filename'
             FIELDS TERMINATED BY ','
             ENCLOSED BY '"'
