@@ -39,8 +39,8 @@ class DashboardController extends ControllerBase
         foreach ($temp as $hour => $d) {
             if ($hour >= 8 && $hour <= 22) {
                 $data[] = $d;
-                $base[] = [ $d[0], $d[1] ];
-                $load[] = [ $d[0], $d[2] ];
+                $base[] = [ $d[0], intval($d[1]) ];
+                $load[] = [ $d[0], intval($d[2]) ];
 
                 $cmarker = $d[1] - 19000;
                 $band20p = round($cmarker*0.80);
@@ -50,8 +50,16 @@ class DashboardController extends ControllerBase
             }
         }
 
+        $temp = $this->dataService->get15MinLoad($id, $date);
+        $min15load = [];
+        foreach ($temp as $d) {
+            $hour = substr($d[0], 0, 2);
+            if ($hour >= 8 && $hour <= 22) {
+                $min15load[] = [ $d[0], intval($d[1]) ];
+            }
+        }
+
         $cur5min = $this->dataService->getCurrent5MinLoad($id);
-        $min15load = $this->dataService->get15MinLoad($id, $date);
 
        #$this->view->now  = $now;
         $this->view->date = $date;

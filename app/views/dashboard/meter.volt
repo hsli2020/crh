@@ -45,7 +45,7 @@
 
       {% for d in data %}
         <tr>
-          <td>{{ date }} {{ d[0] }}:00</td>
+          <td>{{ date }} {{ d[0] }}</td>
           {% if d[2] is not empty %}
             <td class="w3-text-pink">{{ d[2] }}</td>
           {% else %}
@@ -96,17 +96,13 @@ var line1 = {
     label: "Hourly Baseline", // "Avg. of Top 15 Days",
     data: {{ jsonBase }},
     color: "#069",
-    shadowSize: 0,
-    yaxis: 2,
     lines: { show: true, lineWidth: 2 }
 }
 
 var line2 = {
-    label: "15 Min Load", // 15 Min Load
-    data: {{ jsonLoad }}, // jsonMin15Load
+    label: "15 Min Load",
+    data: {{ jsonMin15Load }},
     color: "#c40",
-    shadowSize: 0,
-    yaxis: 2,
     lines: { show: true, lineWidth: 2 }
 }
 
@@ -114,24 +110,20 @@ var line3 = {
     label: "Curtailment Marker",
     data: {{ jsonMarker }},
     color: "#9c27b0",
-    shadowSize: 0,
-    yaxis: 2,
-    lines: { show: true, lineWidth: 2 }
+    lines: { show: true, lineWidth: 2 },
 }
 
 var line4 = {
     label: "20% Band",
     data: {{ jsonBand }},
     color: "#00bcd4",
-    shadowSize: 0,
-    yaxis: 2,
-    lines: { show: true, lineWidth: 2 }
+    lines: { show: true, lineWidth: 2 },
 }
 
 var options = {
     series: {
-        shadowSize: 0,	// Drawing is faster without shadows
-		lines: { show: true },
+        shadowSize: 4,	// Drawing is faster without shadows
+		lines: { show: true, lineWidth: 2 },
 		points: { show: true },
     },
     //crosshair: { mode: "x" },
@@ -149,19 +141,20 @@ var options = {
     },
     xaxis: {
         //mode: 'time',
-        //mode: "categories", // x-axis is non-numeric
+        mode: "categories", // x-axis is non-numeric, THIS IS IMPORTANT!
         show: true,
-		autoscaleMargin: 0.001,
+		//autoscaleMargin: 0.01,
     }
 }
 
-plot1 = $.plot("#placeholder1", [ line1, line2, line3, line4 ], options);
+plot1 = $.plot("#placeholder1", [ line2, line1, line3, line4 ], options);
 
 $("<div id='tooltip'></div>").css({
     position: "absolute",
     display: "none",
     border: "1px solid #fdd",
     padding: "2px 5px",
+    color: "white",
     "font-size": "16px",
     "font-weight": "bold",
     "background-color": "#fee",
@@ -170,12 +163,14 @@ $("<div id='tooltip'></div>").css({
 
 $("#placeholder1").bind("plothover", function (event, pos, item) {
     if (item) {
-        var x = item.datapoint[0] + ':00',
-            y = item.datapoint[1];
+    console.log(item);
+        var i = item.dataIndex,
+            x = item.series.data[i][0],
+            y = item.series.data[i][1];
 
         $("#tooltip").html(item.series.label + " at " + x + " = " + y)
-            .css({top: item.pageY+5, left: item.pageX+5})
-            .fadeIn(200);
+            .css({top: item.pageY+5, left: item.pageX+5, backgroundColor: item.series.color})
+            .fadeIn(20);
     } else {
         $("#tooltip").hide();
     }

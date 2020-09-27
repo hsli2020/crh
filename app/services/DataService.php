@@ -33,7 +33,7 @@ class DataService extends Injectable
 
         $data = [];
         foreach ($rows as $row) {
-            $hr  = $row['hour']; // chart requires number, not string
+            $hr  = sprintf("%02d:00", $row['hour']);
             $val = $row['meter'];
             $data[$hr] = [ $hr, $val, null ];
         }
@@ -73,7 +73,7 @@ class DataService extends Injectable
         }
 
         foreach ($hourly as $hour => $rec) {
-            $h = intval($hour); // chart requires number, not string
+            $h = sprintf("%02d:00", intval($hour));
             $result[$h][2] = intval($rec['sum']/$rec['cnt']);
         }
 
