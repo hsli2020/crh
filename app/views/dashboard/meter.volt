@@ -3,9 +3,7 @@
 {% block main %}
 
 <style type="text/css">
-  table { border: 5px solid #eee !important; }
-  table, th, td { border: 1px solid #ddd; }
-  .w3-table td, .w3-table th, .w3-table-all td, .w3-table-all th { text-align: center; padding: 5px 8px; }
+  .w3-table td, .w3-table th, .w3-table-all td, .w3-table-all th { text-align: center; padding: 5px 8px; border: 1px solid #ddd; }
   .w3-table th.text-left, .w3-table td.text-left { text-align: left; }
   .v-middle { vertical-align: middle; }
   #header { text-align: center; }
@@ -143,7 +141,7 @@ var options = {
         autoHighlight: false,
     },
 	legend: {
-		position: "se",
+		position: "ne",
 	},
     yaxes: {
 		ticks: 10,
@@ -196,6 +194,11 @@ $("#placeholder1").bind("plothover", function (event, pos, item) {
 {% block cssfile %}
   {{ stylesheet_link("/pickadate/themes/classic.css") }}
   {{ stylesheet_link("/pickadate/themes/classic.date.css") }}
+{% endblock %}
+
+{% block csscode %}
+.legend table { border: none; }
+.legend tr { display: inline-table; }
 {% endblock %}
 
 {% block domready %}

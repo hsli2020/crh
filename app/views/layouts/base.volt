@@ -34,10 +34,10 @@
     #toast.success {
         background-color: #008800;
     }
-    {% block csscode %}{% endblock %}
   </style>
 
   {{ stylesheet_link("/css/style.css") }}
+  <style>{% block csscode %}{% endblock %}</style>
 </head>
 <body>
   {% block sidebar %}{# include "partials/sidebar.volt" #}{% endblock %}
