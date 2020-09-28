@@ -65,7 +65,8 @@
       <tr><th colspan="4" class="text-left"><br>Current 5 min Load</th><tr>
       <tr>
         <td>{{ cur5min['time_est'] }}</td>
-        <td colspan="3">{{ cur5min['kw'] }}</td>
+        <td colspan="2">{{ cur5min['kw'] }}</td>
+        <td>kW</td>
       </tr>
 
       <tr><th colspan="4" class="text-left">Standard Baseline</th><tr>
@@ -163,7 +164,6 @@ $("<div id='tooltip'></div>").css({
 
 $("#placeholder1").bind("plothover", function (event, pos, item) {
     if (item) {
-    console.log(item);
         var i = item.dataIndex,
             x = item.series.data[i][0],
             y = item.series.data[i][1];
