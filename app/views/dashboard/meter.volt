@@ -55,7 +55,7 @@
           <td class="w3-text-blue">{{ d[1] }}</td>
 
           {% if d[2] is not empty %}
-            <td class="w3-text-black">{{ d[1] -d[2] }}</td>
+            <td class="w3-text-black">{{ d[3] }}</td>
           {% else %}
             <td>-</td>
           {% endif %}

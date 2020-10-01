@@ -38,7 +38,22 @@ class DashboardController extends ControllerBase
         $data = $base = $load = $marker = $band = [];
         foreach ($temp as $hour => $d) {
             if ($hour >= 8 && $hour <= 22) {
-                $data[] = $d;
+                // for table
+                $tmp[0] = $d[0]; // time
+                $tmp[1] = number_format($d[1]); // baseline
+                $tmp[2] = number_format($d[2]); // actual load
+                $tmp[3] = '-'; // variance
+                if ($d[2]) {
+                    $v = $d[2] - $d[1]; // variance
+                    $tmp[3] = number_format($v);
+                    if ($v < 0) {
+                        $tmp[3] = '('. number_format(abs($v)) . ')';
+                    }
+                }
+
+                $data[] = $tmp;
+
+                // for chart
                 $base[] = [ $d[0], intval($d[1]) ];
                 $load[] = [ $d[0], intval($d[2]) ];
 
@@ -60,6 +75,7 @@ class DashboardController extends ControllerBase
         }
 
         $cur5min = $this->dataService->getCurrent5MinLoad($id);
+        $cur5min['kw'] = number_format($cur5min['kw']);
 
        #$this->view->now  = $now;
         $this->view->date = $date;
