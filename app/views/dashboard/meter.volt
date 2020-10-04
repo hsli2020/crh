@@ -146,8 +146,8 @@ var options = {
 		//tickDecimals: 3,
     },
     xaxis: {
-        //mode: 'time',
-        mode: "categories", // x-axis is non-numeric, THIS IS IMPORTANT!
+        mode: 'time',
+        //mode: "categories", // x-axis is non-numeric, THIS IS IMPORTANT!
         show: true,
 		//autoscaleMargin: 0.01,
     }

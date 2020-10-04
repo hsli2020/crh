@@ -54,14 +54,15 @@ class DashboardController extends ControllerBase
                 $data[] = $tmp;
 
                 // for chart
-                $base[] = [ $d[0], intval($d[1]) ];
-                $load[] = [ $d[0], intval($d[2]) ];
+                $tm = strtotime($date. ' '.$d[0].' UTC') * 1000; // flot requires this
+                $base[] = [ $tm, intval($d[1]) ];
+                $load[] = [ $tm, intval($d[2]) ];
 
                 $cmarker = $d[1] - 19000;
                 $band20p = round($cmarker*0.80);
 
-                $marker[] = [ $d[0], $cmarker ];
-                $band[]   = [ $d[0], $band20p ];
+                $marker[] = [ $tm, $cmarker ];
+                $band[]   = [ $tm, $band20p ];
             }
         }
 
@@ -70,7 +71,8 @@ class DashboardController extends ControllerBase
         foreach ($temp as $d) {
             $hour = substr($d[0], 0, 2);
             if ($hour >= 8 && $hour <= 22) {
-                $min5load[] = [ $d[0], intval($d[1]) ];
+                $tm = strtotime($date. ' '.$d[0].' UTC') * 1000; // flot requires this
+                $min5load[] = [ $tm, intval($d[1]) ];
             }
         }
 
