@@ -137,19 +137,13 @@ var options = {
         //clickable: true,
         autoHighlight: false,
     },
-	legend: {
-		position: "se",
-	},
-    yaxes: {
-		//max: 30000,
-		//ticks: 10,
-		//tickDecimals: 3,
-    },
+    legend: { position: "se" },
+    yaxes: { },
     xaxis: {
         mode: 'time',
         //mode: "categories", // x-axis is non-numeric, THIS IS IMPORTANT!
         show: true,
-		//autoscaleMargin: 0.01,
+        //autoscaleMargin: 0.01,
     }
 }
 
@@ -173,7 +167,9 @@ $("#placeholder1").bind("plothover", function (event, pos, item) {
             x = item.series.data[i][0],
             y = item.series.data[i][1];
 
-        $("#tooltip").html(item.series.label + " at " + x + " = " + y)
+        var tm = timefmt(x);
+
+        $("#tooltip").html(item.series.label + " at " + tm + " = " + y)
             .css({top: item.pageY+5, left: item.pageX+5, backgroundColor: item.series.color})
             .fadeIn(20);
     } else {
@@ -181,6 +177,10 @@ $("#placeholder1").bind("plothover", function (event, pos, item) {
     }
 });
 
+function timefmt(x) {
+    //return new Date(x).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
+    return new Date(x).toISOString().substr(11, 5);
+}
 {% endblock %}
 
 {% block jsfile %}
