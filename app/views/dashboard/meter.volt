@@ -141,8 +141,9 @@ var options = {
 		position: "se",
 	},
     yaxes: {
-		ticks: 10,
-		tickDecimals: 3,
+		//max: 30000,
+		//ticks: 10,
+		//tickDecimals: 3,
     },
     xaxis: {
         //mode: 'time',
