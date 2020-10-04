@@ -97,13 +97,17 @@ var line1 = {
     label: "Hourly Baseline", // "Avg. of Top 15 Days",
     data: {{ jsonBase }},
     color: "#069",
+    points: { show: true },
+    shadowSize: 4,	// Drawing is faster without shadows
     lines: { show: true, lineWidth: 2 }
 }
 
 var line2 = {
-    label: "15 Min Load",
-    data: {{ jsonMin15Load }},
+    label: "5 Min Load",
+    data: {{ jsonMin5Load }},
     color: "#c40",
+    points: { show: false },
+    shadowSize: 4,
     lines: { show: true, lineWidth: 2 }
 }
 
@@ -111,6 +115,8 @@ var line3 = {
     label: "Curtailment Marker",
     data: {{ jsonMarker }},
     color: "#9c27b0",
+    points: { show: true },
+    shadowSize: 4,
     lines: { show: true, lineWidth: 2 },
 }
 
@@ -118,15 +124,13 @@ var line4 = {
     label: "20% Band",
     data: {{ jsonBand }},
     color: "#00bcd4",
+    points: { show: true },
+    shadowSize: 4,
     lines: { show: true, lineWidth: 2 },
 }
 
 var options = {
-    series: {
-        shadowSize: 4,	// Drawing is faster without shadows
-		lines: { show: true, lineWidth: 2 },
-		points: { show: true },
-    },
+    //series: { },
     //crosshair: { mode: "x" },
     grid: {
         hoverable: true,
@@ -134,7 +138,7 @@ var options = {
         autoHighlight: false,
     },
 	legend: {
-		position: "ne",
+		position: "se",
 	},
     yaxes: {
 		ticks: 10,

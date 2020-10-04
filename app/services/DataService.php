@@ -200,6 +200,35 @@ class DataService extends Injectable
         return $data;
     }
 
+    public function get5MinLoad($meter, $date)
+    {
+        $meter = 1; // What to do if meter=3
+
+        $sql = "SELECT CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
+                       ROUND(kva) AS kw
+                  FROM crh_meter_{$meter}
+                 WHERE CONVERT_TZ(time, 'UTC', 'EST')>'$date'";
+        $rows = $this->db->fetchAll($sql);
+
+        /**
+         * return [
+         *    [ 'HH:MM', KW ],
+         *    ...
+         * ]
+         */
+
+        $data = [];
+        foreach ($rows as $row) {
+            $data[] = [
+                substr($row['time_est'], 11, 5), // HH:MM
+                $row['kw'],
+            ];
+        }
+
+        return $data;
+    }
+
+    // not-in-use
     public function get15MinLoad($meter, $date)
     {
         $meter = 1; // What to do if meter=3

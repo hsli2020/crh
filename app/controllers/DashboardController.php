@@ -65,12 +65,12 @@ class DashboardController extends ControllerBase
             }
         }
 
-        $temp = $this->dataService->get15MinLoad($id, $date);
-        $min15load = [];
+        $temp = $this->dataService->get5MinLoad($id, $date);
+        $min5load = [];
         foreach ($temp as $d) {
             $hour = substr($d[0], 0, 2);
             if ($hour >= 8 && $hour <= 22) {
-                $min15load[] = [ $d[0], intval($d[1]) ];
+                $min5load[] = [ $d[0], intval($d[1]) ];
             }
         }
 
@@ -86,6 +86,6 @@ class DashboardController extends ControllerBase
         $this->view->jsonLoad = json_encode($load);
         $this->view->jsonMarker = json_encode($marker);
         $this->view->jsonBand = json_encode($band);
-        $this->view->jsonMin15Load = json_encode($min15load);
+        $this->view->jsonMin5Load = json_encode($min5load);
     }
 }
