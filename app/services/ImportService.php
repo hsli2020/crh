@@ -18,7 +18,7 @@ class ImportService extends Injectable
             ],
             [
                 'name'   => 'Meter 2',
-                'ftpdir' => 'CRH2_001EC6055C22',
+                'ftpdir' => 'CRH2_001EC60556BD',
                 'table'  => 'crh_meter_2',
             ],
         ];
