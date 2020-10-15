@@ -6,7 +6,7 @@
       <div class="" style="display: block;">
         <div class="w3-modal-content w3-padding" style="max-width:400px; margin-top:20%;">
           <p style="text-align: center;">
-            <img src="/img/gcs-logo-name-223x38.png">
+            <img src="/img/gcp-logo-1.png" width="250">
           </p>
 
           <div class="w3-center">
