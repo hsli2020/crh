@@ -188,15 +188,23 @@ class DataService extends Injectable
     // Current 5 min Load
     public function getCurrent5MinLoad($meter)
     {
-        $meter = 1; // What to do if meter=3
-
+        // Meter-1
         $sql = "SELECT CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
                        ROUND(kva) AS kw
-                  FROM crh_meter_{$meter}
+                  FROM crh_meter_1
               ORDER BY time DESC LIMIT 1";
         $data = $this->db->fetchOne($sql);
 
+        // Meter-2
+        $sql = "SELECT ROUND(kva) AS kw
+                  FROM crh_meter_2
+              ORDER BY time DESC LIMIT 1";
+        $temp = $this->db->fetchOne($sql);
+
+        // Sum
+        $data['kw'] += $temp['kw'];
         $data['time_est'] = substr($data['time_est'], 0, 16); // no seconds
+
         return $data;
     }
 
