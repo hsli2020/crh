@@ -90,6 +90,7 @@ class AlertService extends Injectable
     {
         $users = [
             'lihsca@gmail.com',
+            'wsong365@gmail.com',
         ];
 
         $html = $this->generateHtml($this->alerts);
