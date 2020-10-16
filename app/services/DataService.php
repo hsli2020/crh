@@ -44,15 +44,22 @@ class DataService extends Injectable
     // CRH Actual Load
     protected function getActualLoad($meter, $date, $result)
     {
-        if ($meter == 3) $meter = 1; // TODO: TEMP
-
-        $sql = "SELECT time AS time_utc,
-                   --  CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
-                       CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
-                       kva AS kw
-                  FROM crh_meter_{$meter}
-                HAVING DATE(time_est)='$date'";
-
+        if ($meter != 3) {
+            $sql = "SELECT time AS time_utc,
+                       --  CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
+                           CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
+                           kva AS kw
+                      FROM crh_meter_{$meter}
+                    HAVING DATE(time_est)='$date'";
+        } else {
+            $sql = "SELECT m1.time AS time_utc,
+                       --  CONVERT_TZ(m1.time, 'UTC', 'America/Toronto') AS time_edt,
+                           CONVERT_TZ(m1.time, 'UTC', 'EST') AS time_est,
+                           (m1.kva+m2.kva) AS kw
+                      FROM crh_meter_1 m1
+                 LEFT JOIN crh_meter_2 m2 ON m1.time=m2.time
+                    HAVING DATE(time_est)='$date'";
+        }
         $data = $this->db->fetchAll($sql);
 
         $hourly = [];
@@ -210,12 +217,18 @@ class DataService extends Injectable
 
     public function get5MinLoad($meter, $date)
     {
-        $meter = 1; // What to do if meter=3
-
-        $sql = "SELECT CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
-                       ROUND(kva) AS kw
-                  FROM crh_meter_{$meter}
-                 WHERE CONVERT_TZ(time, 'UTC', 'EST')>'$date'";
+        if ($meter != 3) {
+            $sql = "SELECT CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
+                           ROUND(kva) AS kw
+                      FROM crh_meter_{$meter}
+                     WHERE CONVERT_TZ(time, 'UTC', 'EST')>'$date'";
+        } else {
+            $sql = "SELECT CONVERT_TZ(m1.time, 'UTC', 'EST') AS time_est,
+                           ROUND(m1.kva+m2.kva) AS kw
+                      FROM crh_meter_1 m1
+                 LEFT JOIN crh_meter_2 m2 ON m1.time=m2.time
+                     WHERE CONVERT_TZ(m1.time, 'UTC', 'EST')>'$date'";
+        }
         $rows = $this->db->fetchAll($sql);
 
         /**

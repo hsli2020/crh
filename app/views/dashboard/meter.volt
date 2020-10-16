@@ -111,6 +111,7 @@ var line2 = {
     lines: { show: true, lineWidth: 2 }
 }
 
+{#
 var line3 = {
     label: "Curtailment Marker",
     data: {{ jsonMarker }},
@@ -128,6 +129,7 @@ var line4 = {
     shadowSize: 4,
     lines: { show: true, lineWidth: 2 },
 }
+#}
 
 var options = {
     //series: { },

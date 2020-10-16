@@ -35,7 +35,8 @@ class DashboardController extends ControllerBase
 
         $temp = $this->dataService->getData($id, $date);
 
-        $data = $base = $load = $marker = $band = [];
+       #$data = $base = $load = $marker = $band = [];
+        $data = $base = [];
         foreach ($temp as $hour => $d) {
             if ($hour >= 8 && $hour <= 22) {
                 // for table
@@ -56,13 +57,13 @@ class DashboardController extends ControllerBase
                 // for chart
                 $tm = strtotime($date. ' '.$d[0].' UTC') * 1000; // flot requires this
                 $base[] = [ $tm, intval($d[1]) ];
-                $load[] = [ $tm, intval($d[2]) ];
+               #$load[] = [ $tm, intval($d[2]) ];
 
-                $cmarker = $d[1] - 19000;
-                $band20p = round($cmarker*0.80);
+               #$cmarker = $d[1] - 19000;
+               #$band20p = round($cmarker*0.80);
 
-                $marker[] = [ $tm, $cmarker ];
-                $band[]   = [ $tm, $band20p ];
+               #$marker[] = [ $tm, $cmarker ];
+               #$band[]   = [ $tm, $band20p ];
             }
         }
 
@@ -85,9 +86,9 @@ class DashboardController extends ControllerBase
         $this->view->data = $data;
 
         $this->view->jsonBase = json_encode($base);
-        $this->view->jsonLoad = json_encode($load);
-        $this->view->jsonMarker = json_encode($marker);
-        $this->view->jsonBand = json_encode($band);
+       #$this->view->jsonLoad = json_encode($load);
+       #$this->view->jsonMarker = json_encode($marker);
+       #$this->view->jsonBand = json_encode($band);
         $this->view->jsonMin5Load = json_encode($min5load);
     }
 }
