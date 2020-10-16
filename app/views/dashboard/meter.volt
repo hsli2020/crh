@@ -147,7 +147,8 @@ var options = {
     }
 }
 
-plot1 = $.plot("#placeholder1", [ line2, line1, line3, line4 ], options);
+//plot1 = $.plot("#placeholder1", [ line2, line1, line3, line4 ], options);
+plot1 = $.plot("#placeholder1", [ line2, line1 ], options);
 
 $("<div id='tooltip'></div>").css({
     position: "absolute",
