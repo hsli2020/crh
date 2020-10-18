@@ -91,8 +91,8 @@ class DataService extends Injectable
     {
         $date = $dt ?: date('Y-m-d');
 
-        $b1 = $this->calcBaseline(1); // Meter-1
-        $b2 = $this->calcBaseline(2); // Meter-2
+        $b1 = $this->calcBaseline(1, $date); // Meter-1
+        $b2 = $this->calcBaseline(2, $date); // Meter-2
 
         $this->db->execute('TRUNCATE TABLE crh_baseline');
 
@@ -114,11 +114,10 @@ class DataService extends Injectable
         ]);
     }
 
-    protected function calcBaseline($meter)
+    protected function calcBaseline($meter, $date)
     {
-        $date = date('Y-m-d');
+        $start = date('Y-m-d', strtotime('-35 day', strtotime($date)));
 
-        $start = date('Y-m-d', strtotime('-35 day'));
         $sql = "SELECT time AS time_utc,
                    --  CONVERT_TZ(time, 'UTC', 'America/Toronto') AS time_edt,
                        CONVERT_TZ(time, 'UTC', 'EST') AS time_est,
