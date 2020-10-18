@@ -87,8 +87,10 @@ class DataService extends Injectable
         return $result;
     }
 
-    public function generateBaseline()
+    public function generateBaseline($dt = '')
     {
+        $date = $dt ?: date('Y-m-d');
+
         $b1 = $this->calcBaseline(1); // Meter-1
         $b2 = $this->calcBaseline(2); // Meter-2
 
@@ -101,6 +103,15 @@ class DataService extends Injectable
                 'meter2' => $b2[$hour],
             ]);
         }
+
+        // Save Baseline History
+        $this->db->execute("DELETE FROM crh_baseline_history WHERE date='$date'");
+
+        $this->db->insertAsDict('crh_baseline_history', [
+            'date'   => $date,
+            'meter1' => json_encode($b1, JSON_FORCE_OBJECT),
+            'meter2' => json_encode($b2, JSON_FORCE_OBJECT),
+        ]);
     }
 
     protected function calcBaseline($meter)
