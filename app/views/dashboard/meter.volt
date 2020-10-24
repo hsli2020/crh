@@ -86,6 +86,7 @@
           <div id="placeholder1" class="chart-placeholder"></div>
         </div>
       </div>
+      <h3>The time is in EST timezone</h3>
     </div>
   </div>
 
@@ -95,6 +96,7 @@
 {% block jscode %}
 var line1 = {
     label: "Hourly Baseline", // "Avg. of Top 15 Days",
+    unit: 'kWh',
     data: {{ jsonBase }},
     color: "#069",
     points: { show: true },
@@ -104,6 +106,7 @@ var line1 = {
 
 var line2 = {
     label: "5 Min Load",
+    unit: 'kW',
     data: {{ jsonMin5Load }},
     color: "#c40",
     points: { show: false },
@@ -170,9 +173,10 @@ $("#placeholder1").bind("plothover", function (event, pos, item) {
             x = item.series.data[i][0],
             y = item.series.data[i][1];
 
-        var tm = timefmt(x);
+        var tm = timefmt(x), y = y.toLocaleString();
+        var unit = item.series.unit;
 
-        $("#tooltip").html(item.series.label + " at " + tm + " = " + y)
+        $("#tooltip").html(item.series.label + "<br>" + `${tm} (EST) = ${y } ${unit}`)
             .css({top: item.pageY+5, left: item.pageX+5, backgroundColor: item.series.color})
             .fadeIn(20);
     } else {
