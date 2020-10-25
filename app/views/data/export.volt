@@ -5,19 +5,20 @@
   <div style="display: block;margin: 0 auto;width: 500px;">
       <form class="w3-container" method="POST" autocomplete="off">
         <div class="w3-section">
+{#
           <div class="w3-row-padding">
             <div class="w3-third w3-padding-16">
               <label><b>Meter</b></label>
             </div>
             <div class="w3-twothird w3-padding-8">
               <select class="w3-select w3-border" name="meter" required>
-{#              <option disabled selected>Select Meter</option> #}
+                <option disabled selected>Select Meter</option>
                 <option value="1">Meter 1</option>
                 <option value="2">Meter 2</option>
               </select>
             </div>
           </div>
-
+#}
           <div class="w3-row-padding">
             <div class="w3-third w3-padding-16">
               <label><b>Data Type</b></label>
