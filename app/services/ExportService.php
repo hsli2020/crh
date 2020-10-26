@@ -8,13 +8,19 @@ class ExportService extends Injectable
 {
     public function export($params)
     {
-        return $this->exportRawData($params);
+        $dataType = $params['datatype'];
+
+        if ($dataType == 'raw-data') {
+            return $this->exportRawData($params);
+        }
+        if ($dataType == 'baseline-actual-load') {
+            return $this->exportBaselineActualLoad($params);
+        }
     }
 
     public function exportRawData($params)
     {
        #$meter     = $params['meter'];
-        $dataType  = $params['datatype'];
         $startTime = $params['start-time'];
         $endTime   = $params['end-time'];
 
@@ -44,6 +50,38 @@ EOS;
         catch (\Exception $e) {
             //fpr($e->getMessage());
         }
+
+        return $this->zipFiles($filename);
+    }
+
+    public function exportBaselineActualLoad($params)
+    {
+        $startTime = $params['start-time'];
+        $endTime   = $params['end-time'];
+
+        // Filename
+        $now = date('Ymd-His');
+        $basedir = str_replace('\\', '/', BASE_DIR);
+        $filename = "$basedir./tmp/crh-baseline-$now.csv";
+
+        $fp = fopen($filename, 'w');
+        fputcsv($fp, [ "time(EST)", "Meter1", "Meter2" ]);
+
+        $sql = "SELECT * FROM crh_baseline_history WHERE date>='$startTime' AND date<='$endTime'";
+        $rows = $this->db->fetchAll($sql);
+        foreach ($rows as $row) {
+            $date = $row['date'];
+            $meter1 = json_decode($row['meter1'], 1);
+            $meter2 = json_decode($row['meter2'], 1);
+            foreach ($meter1 as $hour => $m1kw) {
+                if ($hour >= 8 && $hour <= 22) {
+                    $m2kw = $meter2[$hour];
+                    fputcsv($fp, [ "$date $hour:00", $m1kw, $m2kw ]);
+                }
+            }
+        }
+
+        fclose($fp);
 
         return $this->zipFiles($filename);
     }

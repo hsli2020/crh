@@ -26,7 +26,8 @@
             <div class="w3-twothird w3-padding-8">
               <select class="w3-select w3-border" name="datatype" required>
 {#              <option disabled selected>Select Data Type</option> #}
-                <option value="1">Raw data</option>
+                <option value="raw-data">Raw data</option>
+                <option value="baseline-actual-load">Baseline + Actual Load</option>
               </select>
             </div>
           </div>
