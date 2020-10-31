@@ -72,8 +72,8 @@
       <tr><th colspan="4" class="text-left">Standard Baseline</th><tr>
       <tr>
         <td colspan="4" class="text-left">
-            Average of the highest 15 measurement data values for the same hour that was 
-            activated in the last 20 suitable business days prior to activation.
+            Average of the highest 15 measurement data values for the same hour
+            in the last 20 suitable business days prior to activation.
         </td>
       </tr>
     </table>
