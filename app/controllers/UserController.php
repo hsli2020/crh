@@ -105,11 +105,6 @@ class UserController extends ControllerBase
                 $user->password = $this->security->hash($password);
                 $user->save();
 
-                $userProjects = new UserProjects();
-                $userProjects->userId = $user->id;
-                $userProjects->projects = '*'; // all projects by default
-                $userProjects->save();
-
                 $this->flashSession->success("The user '$username' added successfully.");
             } catch (\Exception $e) {
                #fpr($e->getMessage());

@@ -24,8 +24,8 @@
     <div class="w3-dropdown-content w3-white w3-card-4" style="right:0">
 {#
       <a href="#" class="w3-hover-teal">Settings</a>
-      <a href="/user/change-password" class="w3-hover-teal">Change Password</a>
 #}
+      <a href="/user/change-password" class="w3-hover-teal">Change Password</a>
       <a href="/user/logout" class="w3-hover-teal">Log out</a>
     </div>
   </li>
