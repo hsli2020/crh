@@ -142,7 +142,7 @@ class DataService extends Injectable
             }
 
             if (getSeason($dt) != $season) {
-                break; // shouldn't cross seasons (SUMMER/WINTER)
+#               break; // shouldn't cross seasons (SUMMER/WINTER)
             }
 
             if (isset($daily[$dt])) {
@@ -200,6 +200,57 @@ class DataService extends Injectable
 
         ksort($result); // sort by hour
         return $result;
+    }
+
+    public function generateActualLoad($dt = '')
+    {
+        $date = $dt ? $dt : date('Y-m-d');
+
+        $sql = "SELECT m1.time AS time_utc,
+                   --  CONVERT_TZ(m1.time, 'UTC', 'America/Toronto') AS time_edt,
+                       CONVERT_TZ(m1.time, 'UTC', 'EST') AS time_est,
+                       m1.kva AS meter1,
+                       m2.kva AS meter2
+                  FROM crh_meter_1 m1
+             LEFT JOIN crh_meter_2 m2 ON m1.time=m2.time
+                HAVING DATE(time_est)='$date'";
+        $data = $this->db->fetchAll($sql);
+
+        $hourly = [];
+        foreach ($data as $rec) {
+            $time = $rec['time_est'];
+           #$dt = substr($time, 0, 10);
+            $hr = substr($time, 11, 2);
+
+            if (isset($hourly[$hr])) {
+                $hourly[$hr]['meter1']['sum'] += $rec['meter1'];
+                $hourly[$hr]['meter1']['cnt'] += 1;
+
+                $hourly[$hr]['meter2']['sum'] += $rec['meter2'];
+                $hourly[$hr]['meter2']['cnt'] += 1;
+            } else {
+                $hourly[$hr]['meter1']['sum'] = $rec['meter1'];
+                $hourly[$hr]['meter1']['cnt'] = 1;
+
+                $hourly[$hr]['meter2']['sum'] = $rec['meter2'];
+                $hourly[$hr]['meter2']['cnt'] = 1;
+            }
+        }
+
+        $m1 = [];
+        $m2 = [];
+        foreach ($hourly as $hour => $rec) {
+           #$h = sprintf("%02d:00", intval($hour));
+            $m1[$hour] = intval($rec['meter1']['sum']/$rec['meter1']['cnt']);
+            $m2[$hour] = intval($rec['meter2']['sum']/$rec['meter2']['cnt']);
+        }
+
+        // Save Actual Load
+        $this->db->insertAsDict('crh_actual_load', [
+            'date'   => $date,
+            'meter1' => json_encode($m1, JSON_FORCE_OBJECT),
+            'meter2' => json_encode($m2, JSON_FORCE_OBJECT),
+        ]);
     }
 
     // Current 5 min Load
