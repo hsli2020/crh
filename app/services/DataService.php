@@ -220,7 +220,7 @@ class DataService extends Injectable
         foreach ($data as $rec) {
             $time = $rec['time_est'];
            #$dt = substr($time, 0, 10);
-            $hr = substr($time, 11, 2);
+            $hr = intval(substr($time, 11, 2));
 
             if (isset($hourly[$hr])) {
                 $hourly[$hr]['meter1']['sum'] += $rec['meter1'];
