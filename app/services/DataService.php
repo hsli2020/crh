@@ -114,7 +114,49 @@ class DataService extends Injectable
         ]);
     }
 
-    protected function calcBaseline($meter, $date)
+    public function calcBaseline($date)
+    {
+        $start = date('Y-m-d', strtotime('-35 day', strtotime($date)));
+
+        $sql = "SELECT * FROM crh_actual_load
+                 WHERE `date`>='$start' AND `date`<'$date'
+              ORDER BY `date` DESC";
+        $data = $this->db->fetchAll($sql);
+
+        $days = 0;
+        $hourly = [];
+
+        foreach ($data as $rec) {
+            $date = $rec['date'];
+            if (isWeekend($date) || isHoliday($date) || isMaintenance($date)) {
+                continue;
+            }
+
+            $meter1 = json_decode($rec['meter1'], 1);
+            $meter2 = json_decode($rec['meter2'], 1);
+
+            foreach (range(0, 23) as $hour) {
+                $load = $meter1[$hour] + $meter2[$hour];
+                $hourly[$hour][] = $load;
+            }
+
+            if (++$days == 20) {
+                break;
+            }
+        }
+
+        $baseline = [];
+        foreach (range(0, 23) as $hour) {
+            rsort($hourly[$hour]);
+            $hourly[$hour] = array_slice($hourly[$hour], 0, 15);
+            $baseline[$hour] = round(array_sum($hourly[$hour]) / count($hourly[$hour]));
+        }
+
+        return $baseline;
+    }
+
+    // OLD CODE, CAN BE DELETED
+    protected function _calcBaseline($meter, $date)
     {
         $start = date('Y-m-d', strtotime('-35 day', strtotime($date)));
 
