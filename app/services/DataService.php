@@ -15,26 +15,22 @@ class DataService extends Injectable
         //    HOUR => [ HOUR, BASELINE, LOAD ]
         // ]
 
-        $result = $this->getStdBaseline($meter, $date);
+        $result = $this->getStdBaseline();
         $result = $this->getActualLoad($meter, $date, $result);
 
         return $result;
     }
 
     // CRH Standard Baseline
-    protected function getStdBaseline($meter, $date)
+    protected function getStdBaseline()
     {
-        if ($meter == 1) $col = 'meter1'; else
-        if ($meter == 2) $col = 'meter2'; else
-        if ($meter == 3) $col = '(meter1 + meter2)';
-
-        $sql = "SELECT hour, $col AS meter FROM crh_baseline";
+        $sql = "SELECT hour, baseline FROM crh_baseline";
         $rows = $this->db->fetchAll($sql);
 
         $data = [];
         foreach ($rows as $row) {
             $hr  = sprintf("%02d:00", $row['hour']);
-            $val = $row['meter'];
+            $val = $row['baseline'];
             $data[$hr] = [ $hr, $val, null ];
         }
 
@@ -91,16 +87,16 @@ class DataService extends Injectable
     {
         $date = $dt ?: date('Y-m-d');
 
-        $b1 = $this->calcBaseline(1, $date); // Meter-1
-        $b2 = $this->calcBaseline(2, $date); // Meter-2
+        $b = $this->calcBaseline($date);
 
         $this->db->execute('TRUNCATE TABLE crh_baseline');
 
         foreach (range(0, 23) as $hour) {
             $this->db->insertAsDict('crh_baseline', [
-                'hour'   => $hour,
-                'meter1' => $b1[$hour],
-                'meter2' => $b2[$hour],
+                'hour'     => $hour,
+               #'meter1'   => 0,
+               #'meter2'   => 0,
+                'baseline' => $b[$hour],
             ]);
         }
 
@@ -108,9 +104,10 @@ class DataService extends Injectable
         $this->db->execute("DELETE FROM crh_baseline_history WHERE date='$date'");
 
         $this->db->insertAsDict('crh_baseline_history', [
-            'date'   => $date,
-            'meter1' => json_encode($b1, JSON_FORCE_OBJECT),
-            'meter2' => json_encode($b2, JSON_FORCE_OBJECT),
+            'date'     => $date,
+            'meter1'   => '',
+            'meter2'   => '',
+            'baseline' => json_encode($b, JSON_FORCE_OBJECT),
         ]);
     }
 
