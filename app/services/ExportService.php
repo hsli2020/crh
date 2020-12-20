@@ -68,31 +68,28 @@ EOS;
         fputcsv($fp, [ "time(EST)", "Baseline", "Actual-Load" ]);
 
         $sql = "SELECT b.date,
-                       b.meter1 AS m1b,
-                       b.meter2 AS m2b,
+                       b.baseline,
                        a.meter1 AS m1a,
                        a.meter2 AS m2a
                   FROM crh_baseline_history  b
                   JOIN crh_actual_load       a ON a.date=b.date
                  WHERE b.date>='$startTime' AND b.date<='$endTime'";
         $rows = $this->db->fetchAll($sql);
-
         foreach ($rows as $row) {
             $date = $row['date'];
-            $m1b = json_decode($row['m1b'], 1);
-            $m2b = json_decode($row['m2b'], 1);
+
+            $baseline = json_decode($row['baseline'], 1);
 
             $m1a = json_decode($row['m1a'], 1);
             $m2a = json_decode($row['m2a'], 1);
 
             foreach (range(8, 22) as $hour) {
-                $m1bkw = $m1b[$hour];
-                $m2bkw = $m2b[$hour];
+                $bkw = $baseline[$hour];
 
                 $m1akw = $m1a[$hour];
                 $m2akw = $m2a[$hour];
 
-                fputcsv($fp, [ "$date $hour:00", $m1bkw+$m2bkw, $m1akw+$m2akw ]);
+                fputcsv($fp, [ "$date $hour:00", $bkw, $m1akw+$m2akw ]);
             }
         }
 
