@@ -290,6 +290,21 @@ class DataService extends Injectable
         return $data;
     }
 
+    public function isDateExcluded($date)
+    {
+        static $excludedDates = [];
+
+        if (empty($excluded)) {
+            $rows = $this->db->fetchAll("SELECT * FROM date_excluded");
+            $excludedDates = array_column($rows, 'note', 'date');
+        }
+
+        $weekend = date('N', strtotime($date)) >= 6;
+        $excluded = isset($excludedDates[$date]);
+
+        return ($weekend || $excluded) ? 1 : 0;
+    }
+
     public function setDateExcluded($params)
     {
         $date = $params['date'];
