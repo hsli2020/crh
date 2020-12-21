@@ -18,4 +18,18 @@ class DataController extends ControllerBase
             $this->startDownload($filename);
         }
     }
+
+    public function excludeAction()
+    {
+        $this->view->pageTitle = 'Excluded Dates';
+
+        if ($this->request->isPost()) {
+            $params = $this->request->getPost();
+            $this->dataService->setDateExcluded($params);
+            $this->response->redirect('/data/exclude');
+        }
+
+        $dates = $this->dataService->loadExcludedDateList();
+        $this->view->dates = $dates;
+    }
 }

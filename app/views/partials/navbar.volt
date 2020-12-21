@@ -16,6 +16,8 @@
     <a href="javascript:;" class="w3-hover-grey">Tools <i class="fa fa-caret-down"></i></a>
     <div class="w3-dropdown-content w3-white w3-card-4">
       <a href="/data/export" class="w3-hover-teal">Data Export</a>
+      <hr style="margin:0.5em;">
+      <a href="/data/exclude" class="w3-hover-teal">Exclude Date</a>
     </div>
   </li>
 

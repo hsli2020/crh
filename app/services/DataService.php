@@ -289,4 +289,25 @@ class DataService extends Injectable
 
         return $data;
     }
+
+    public function setDateExcluded($params)
+    {
+        $date = $params['date'];
+        $note = $params['note'];
+
+        try {
+            $this->db->insertAsDict('date_excluded', [
+                'date' => $date,
+                'note' => $note,
+            ]);
+        } catch (\Exception $e) {
+        }
+    }
+
+    public function loadExcludedDateList()
+    {
+        $sql = "SELECT * FROM date_excluded ORDER BY `date`";
+        $rows = $this->db->fetchAll($sql);
+        return $rows;
+    }
 }
