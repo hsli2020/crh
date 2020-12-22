@@ -25,6 +25,8 @@ class DataController extends ControllerBase
 
         if ($this->request->isPost()) {
             $params = $this->request->getPost();
+            $auth = $this->session->get('auth');
+            $params['user'] = $auth['username'];
             $this->dataService->setDateExcluded($params);
             $this->response->redirect('/data/exclude');
         }

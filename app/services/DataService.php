@@ -309,11 +309,13 @@ class DataService extends Injectable
     {
         $date = $params['date'];
         $note = $params['note'];
+        $user = $params['user'];
 
         try {
             $this->db->insertAsDict('date_excluded', [
                 'date' => $date,
                 'note' => $note,
+                'user' => $user,
             ]);
         } catch (\Exception $e) {
         }

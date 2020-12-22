@@ -35,12 +35,16 @@
           <button class="w3-btn-block w3-indigo w3-section w3-padding" type="submit">Exclude Date</button>
         </div>
       </form>
+  </div>
 
+  <div style="display: block;margin: 0 auto;width: 800px;">
       <table id="table1" class="w3-table w3-white w3-bordered w3-border">
         <tr>
           <th>#</th>
           <th>Date</th>
           <th>Note</th>
+          <th>User</th>
+          <th>Created On</th>
         </tr>
 
         {% for d in dates %}
@@ -48,6 +52,8 @@
           <td>{{ loop.index }}</td>
           <td>{{ d['date'] }}</td>
           <td>{{ d['note'] }}</td>
+          <td>{{ d['user'] }}</td>
+          <td>{{ d['createdon'] }}</td>
         </tr>
         {% endfor %}
       </table>
