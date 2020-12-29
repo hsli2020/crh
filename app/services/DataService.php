@@ -125,7 +125,7 @@ class DataService extends Injectable
 
         foreach ($data as $rec) {
             $date = $rec['date'];
-            if (isWeekend($date) || isHoliday($date) || isMaintenance($date)) {
+            if ($this->isDateExcluded($date) || $rec['excluded']) {
                 continue;
             }
 
@@ -197,9 +197,10 @@ class DataService extends Injectable
 
         // Save Actual Load
         $this->db->insertAsDict('crh_actual_load', [
-            'date'   => $date,
-            'meter1' => json_encode($m1, JSON_FORCE_OBJECT),
-            'meter2' => json_encode($m2, JSON_FORCE_OBJECT),
+            'date'     => $date,
+            'meter1'   => json_encode($m1, JSON_FORCE_OBJECT),
+            'meter2'   => json_encode($m2, JSON_FORCE_OBJECT),
+            'excluded' => $this->isDateExcluded($date),
         ]);
     }
 
@@ -294,15 +295,24 @@ class DataService extends Injectable
     {
         static $excludedDates = [];
 
-        if (empty($excluded)) {
+        $weekend = date('N', strtotime($date)) >= 6;
+        if ($weekend) {
+            return 1;
+        }
+
+        $holiday = isHoliday($date);
+        if ($holiday) {
+            return 1;
+        }
+
+        if (empty($excludedDates)) {
             $rows = $this->db->fetchAll("SELECT * FROM date_excluded");
             $excludedDates = array_column($rows, 'note', 'date');
         }
 
-        $weekend = date('N', strtotime($date)) >= 6;
         $excluded = isset($excludedDates[$date]);
 
-        return ($weekend || $excluded) ? 1 : 0;
+        return $excluded ? 1 : 0;
     }
 
     public function setDateExcluded($params)
