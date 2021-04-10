@@ -300,10 +300,10 @@ class DataService extends Injectable
             return 1;
         }
 
-        $holiday = isHoliday($date);
-        if ($holiday) {
-            return 1;
-        }
+       #$holiday = isHoliday($date);
+       #if ($holiday) {
+       #    return 1;
+       #}
 
         if (empty($excludedDates)) {
             $rows = $this->db->fetchAll("SELECT * FROM date_excluded");
