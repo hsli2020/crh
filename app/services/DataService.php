@@ -154,7 +154,7 @@ class DataService extends Injectable
 
     public function generateActualLoad($dt = '')
     {
-        $date = $dt ? $dt : date('Y-m-d');
+        $date = $dt ? $dt : date('Y-m-d', strtotime('-1 days'));
 
         $sql = "SELECT m1.time AS time_utc,
                    --  CONVERT_TZ(m1.time, 'UTC', 'America/Toronto') AS time_edt,
