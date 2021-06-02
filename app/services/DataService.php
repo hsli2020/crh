@@ -196,6 +196,8 @@ class DataService extends Injectable
         }
 
         // Save Actual Load
+        $this->db->execute("DELETE FROM crh_actual_load WHERE date='$date'");
+
         $this->db->insertAsDict('crh_actual_load', [
             'date'     => $date,
             'meter1'   => json_encode($m1, JSON_FORCE_OBJECT),
