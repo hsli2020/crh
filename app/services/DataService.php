@@ -85,7 +85,7 @@ class DataService extends Injectable
 
     public function generateBaseline($dt = '')
     {
-        $date = $dt ?: date('Y-m-d', strtotime('-1 days'));
+        $date = $dt ?: date('Y-m-d');
 
         $b = $this->calcBaseline($date);
 
