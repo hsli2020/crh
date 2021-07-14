@@ -35,7 +35,7 @@ class ExportService extends Injectable
         $sql =<<<EOS
             SELECT "Time(EST)", "Meter1", "Meter2", "Sum"
             UNION ALL
-            SELECT CONVERT_TZ(m1.time, 'UTC', 'EST') AS time_est, ROUND(m1.kva), ROUND(m2.kva), ROUND(m1.kva+m2.kva)
+            SELECT CONVERT_TZ(m1.time, 'UTC', 'EST') AS time_est, ROUND(m1.kva, 3), ROUND(m2.kva, 3), ROUND(m1.kva+m2.kva, 3)
             FROM crh_meter_1 m1
             JOIN crh_meter_2 m2 on m1.time=m2.time
             HAVING time_est>='$startTime' AND time_est<='$endTime'
